@@ -10,6 +10,21 @@ definitions:
     - email
     - password
     type: object
+  models.Profile:
+    properties:
+      avatar:
+        type: string
+      bio:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
   models.User:
     properties:
       email:
@@ -48,6 +63,132 @@ info:
   title: Go RESTful API Example
   version: "1.0"
 paths:
+  /profiles:
+    delete:
+      description: Remove profile of the logged-in user
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete profile of authenticated user
+      tags:
+      - profiles
+    get:
+      description: Retrieve profile details using the User ID from token.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Profile'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get profile of authenticated user
+      tags:
+      - profiles
+    post:
+      consumes:
+      - application/json
+      description: Add a new profile to the database. User ID is extracted from the
+        token.
+      parameters:
+      - description: Profile details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.Profile'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new profile
+      tags:
+      - profiles
+    put:
+      consumes:
+      - application/json
+      description: Update profile fields of the logged-in user
+      parameters:
+      - description: Updated Profile details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.Profile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update profile of authenticated user
+      tags:
+      - profiles
   /users:
     get:
       description: Retrieve a list of all users from the database

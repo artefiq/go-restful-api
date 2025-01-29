@@ -44,6 +44,7 @@ func main() {
 	{
 		// Register user routes within the /api/v1 group
 		routes.RegisterUserRoutes(api)
+		routes.RegiterProfileRoutes(api)
 	}
 
 	// Start the server
